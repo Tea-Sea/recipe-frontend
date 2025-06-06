@@ -5,12 +5,10 @@ import Error from '../pages/Error/Error';
 
 export default function AppRoutes() {
   return (
-    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/recipes" element={<Recipes />} />
         <Route path="/error" element={<Error />} />
       </Routes>
-    </BrowserRouter>
   );
 }

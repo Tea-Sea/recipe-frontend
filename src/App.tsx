@@ -1,11 +1,14 @@
 import React from 'react';
 import AppRoutes from './routes/AppRoutes';
 import MainLayout from './layouts/MainLayout';
+import { BrowserRouter } from 'react-router-dom';
 
 function App() {
   return (
-    <MainLayout>
-      <AppRoutes />
-    </MainLayout>
+    <BrowserRouter>
+      <MainLayout>
+        <AppRoutes />
+      </MainLayout>
+    </BrowserRouter>
   );
 }; export default App;
