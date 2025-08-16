@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Recipe } from '../../types/recipe';
+import { Recipe } from '../../types/recipe.types';
 import './Home.module.css';
 
 function Home() {
