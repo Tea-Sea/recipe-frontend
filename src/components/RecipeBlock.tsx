@@ -1,4 +1,4 @@
-import { Recipe as RecipeType } from '../types/recipe.types'
+import type  { RecipeType } from '../types/recipe.types'
 
 interface RecipeProps {
   recipe: RecipeType;

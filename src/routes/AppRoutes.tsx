@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from '../pages/Home/Home';
-import Recipes from '../pages/Recipes/Recipes';
-import Error from '../pages/Error/Error';
+import Home from '../pages/Home';
+import Recipes from '../pages/Recipes';
+import Error from '../pages/Error';
 
 export default function AppRoutes() {
   return (
