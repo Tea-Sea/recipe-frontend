@@ -25,11 +25,12 @@ function Home() {
   };
 
   return (
-    <div className="App">
-      <header className="Home-Header">
-        <button className='Option-Button' onClick={fetchRandomRecipe}>
+    <div className='content h-full'>
+      <header>
+        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={fetchRandomRecipe}>
           Give me a random recipe
         </button>
+      </header>
         {error && <p style={{ color: 'red' }}>Error: {error}</p>}
          {recipe && (
         <div>
@@ -45,7 +46,7 @@ function Home() {
           </ul> */}
         </div>
       )}
-      </header>
+
     </div>
   );
 }

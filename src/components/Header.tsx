@@ -1,27 +1,22 @@
 import { Link } from 'react-router-dom';
+import HeaderButton from './HeaderButton';
 
 const Header: React.FC = () => {
   return (
-    <header>
+    <header className='bg-blue-200'>
       <nav>
-        <Link to="/">
+        <Link to="/" className='left-0 font-bold'>
           RECIPE BOOK PLACEHOLDER
         </Link>
-        <ul>
+        <ul className='justify-center inline-flex mr-14 mt-10 space-x-6 w-full uppercase text-base font-semibold text-black'>
           <li>
-            <Link to="/">
-              Home
-            </Link>
+           <HeaderButton to='/'>Home</HeaderButton>
           </li>
           <li>
-            <Link to="/recipes">
-              Recipes
-            </Link>
+            <HeaderButton to='/recipes'>Recipes</HeaderButton>
           </li>
           <li>
-            <Link to="/error">
-              Error
-            </Link>
+            <HeaderButton to="/error"> Error</HeaderButton>
           </li>
         </ul>
       </nav>

@@ -6,7 +6,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   return (
     <>
       <Header />
-      <main>{children}</main>
+      <main className='bg-blue-600 flex-1 h-full w-full'>{children}</main>
       <Footer />
     </>
   );
