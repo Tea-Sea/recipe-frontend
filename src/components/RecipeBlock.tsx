@@ -6,13 +6,13 @@ interface RecipeProps {
 
 const Recipe: React.FC<RecipeProps> = ({ recipe }) => {
   return (
-    <div className="recipe">
+    <div>
       <h2><strong>{recipe.name}</strong></h2>
       <h3>Ingredients</h3>
       <ul>
         {recipe.ingredients.map((item, i) =>
           <li key={i}>
-            {item.amount}{item.unit?.label} {item.ingredient.label}{item.unit?.label ? '': 's'}
+            {item.amount}{item.unit?.label ? ' ' + item.unit?.label : ''} {item.ingredient.label}{item.unit?.label ? '': 's'}
           </li>
         )}
       </ul>
