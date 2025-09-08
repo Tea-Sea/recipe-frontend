@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import HeaderButton from './HeaderButton';
-import logo from './../../public/TestLogo.png'
+import logo from './../../src/assets/TestLogo.png'
 
 const Header: React.FC = () => {
   return (
-    <header className='bg-blue-200 h-15 px-3'>
+    <header className=' z-20 bg-blue-200 h-15 px-3'>
       <nav className='flex h-full items-end'>
         <Link to="/" className='items-center'>
           <img src={logo} alt='CBA CookBook' width="40" height='40'/>

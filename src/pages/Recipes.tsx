@@ -32,8 +32,8 @@ function Recipes() {
     fetchRecipeData();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <p className='center-parent font-extrabold'>LOADING...</p>;
+  if (error) return <p className='center-parent'>{error}</p>;
 
   return (
     <div>

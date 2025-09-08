@@ -6,7 +6,7 @@ interface RecipeProps {
 
 const Recipe: React.FC<RecipeProps> = ({ recipe }) => {
   return (
-    <div>
+    <div className='bg-white border-2 border-black p-4 mb-5 shadow-retro'>
       <h2><strong>{recipe.name}</strong></h2>
       <h3>Ingredients</h3>
       <ul>

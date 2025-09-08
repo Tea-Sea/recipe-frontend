@@ -1,9 +1,7 @@
 
 function Error() {
   return (
-    <div>
-      <h3>Error: Page does not exist!</h3>
-    </div>
+    <h3 className='center-parent'>Error: Page does not exist!</h3>
   );
 }
 

@@ -24,17 +24,19 @@ function Home() {
     }};
 
   return (
-    <div className='content h-full'>
-      <header>
-        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={fetchRandomRecipeData}>
+    <>
+      <header className='flex justify-center'>
+        <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 my-2 rounded-2xl' onClick={fetchRandomRecipeData}>
           Give me a random recipe
         </button>
       </header>
-      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-       {recipeData && (
-          <Recipe key={recipeData.id}recipe={recipeData}></Recipe>
+      <div>
+      {error && <p className='center-parent'>{error}</p>}
+        {recipeData && (
+          <Recipe key={recipeData.id} recipe={recipeData}></Recipe>
         )}
-    </div>
+        </div>
+    </>
   );
 }
 
