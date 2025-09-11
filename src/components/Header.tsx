@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 import HeaderButton from './HeaderButton';
-import logo from './../../src/assets/TestLogo.png'
+import Logo from './../../src/assets/TestLogo.svg?react';
 
 const Header: React.FC = () => {
   return (
-    <header className=' z-20 bg-blue-200 h-15 px-3'>
+    <header className=' z-20 bg-blue-200 h-15'>
       <nav className='flex h-full items-end'>
         <Link to="/" className='items-center'>
-          <img src={logo} alt='CBA CookBook' width="40" height='40'/>
+          <Logo width={60} height={60} viewBox="190 0 270 750" preserveAspectRatio="xMidYMid meet" className='hover:fill-black fill-gray-600 transition-all duration-300'></Logo>
         </Link>
         <ul className='flex flex-1 justify-center space-x-6 pb-2'>
           <li>

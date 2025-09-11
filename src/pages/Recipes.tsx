@@ -37,7 +37,7 @@ function Recipes() {
 
   return (
     <div>
-      <h1><strong>Recipes:</strong></h1>
+      <h1 className='py-3 text-xl font-bold uppercase'>Recipes:</h1>
       <ul>
         {recipeData?.map((item) => (
           <Recipe key={item.id}recipe={item}></Recipe>
