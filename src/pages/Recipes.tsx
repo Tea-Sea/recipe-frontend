@@ -2,6 +2,7 @@ import Recipe from '../components/RecipeBlock'
 import { keysToCamel } from '../utils/snakeToCamel';
 import type { RecipeType } from '../types/recipe.types';
 import { useEffect, useState } from 'react';
+import Modal from '../components/Modal';
 
 function Recipes() {
 
@@ -38,6 +39,7 @@ function Recipes() {
   return (
     <div>
       <h1 className='py-3 text-xl font-bold uppercase'>Recipes:</h1>
+      <Modal title="new">HELLO WORLD</Modal>
       <ul>
         {recipeData?.map((item) => (
           <Recipe key={item.id}recipe={item}></Recipe>
