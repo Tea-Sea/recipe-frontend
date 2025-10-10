@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import svgrPlugin from 'vite-plugin-svgr'
@@ -10,4 +10,9 @@ export default defineConfig({
     tailwindcss(),
     svgrPlugin(),
   ],
+  test: {
+    globals: true,
+    environment: 'jsdom', // Needed for React Testing Library
+    setupFiles: './src/setupTests.ts', // optional setup file
+  }
 })

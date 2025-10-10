@@ -1,29 +1,25 @@
 import React from 'react';
-import { useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
-interface ModalProps {
-  title: string;
-  children: ReactNode;
-}
 
-const Modal: React.FC<ModalProps> = ({title, children}) => {
-    const [showModal, setShowModal] = useState(false);
+export default function Modal({showModal, onClose, children}: {
+    showModal: boolean
+    onClose: () => void
+    children?: React.ReactNode
+  }) {
+    if (!showModal) return null
+
   return (
     <div>
-        <button className="hover:underline" onClick={() => setShowModal(true)}>{title}</button>
         {showModal && createPortal(
         <div className='fixed inset-0 bg-black/30 flex items-center justify-center z-50'>
-            <div className='relative bg-white  p-10 border-3'>
+            <div className='relative bg-white p-5 border-2 w-[90vw] max-w-5xl max-h-[80vh] overflow-y-auto'>
+            <button className='sticky top-0 float-right font-extrabold text-sm rounded-2xl px-1.5 h-fit w-fit border-3 bg-gray-100 text-gray-500 border-gray-500 hover:text-black hover:bg-gray-400 hover:border-black transition-colors' onClick={onClose}>X</button>
                 {children}
-                <button className='absolute top-1 right-2 text-gray-500 hover:text-gray-700' onClick={() => setShowModal(false)}>x</button>
             </div>
         </div>,
         document.body
       )}
-
     </div>
     )
 };
-
-export default Modal;

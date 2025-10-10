@@ -38,6 +38,7 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, expanded = false }) => {
           )}
         </ul>
         </Collapsible>
+        <button className='float-right hover:underline'>REMOVE TBA</button>
       </Collapsible>
     </div>
   );

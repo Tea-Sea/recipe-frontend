@@ -1,7 +1,7 @@
 const toCamel = (str: string): string =>
   str.replace(/([-_][a-z])/gi, s => s.toUpperCase().replace(/[-_]/g, ""));
 
-// recursively convert object keys
+// Recursively convert object keys
 export const keysToCamel = (input: any): any => {
     if (input === null || input === undefined) return input;
 
