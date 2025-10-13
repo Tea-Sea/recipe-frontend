@@ -33,7 +33,7 @@ function Home() {
       <div>
       {error && <p className='center-parent'>{error}</p>}
         {recipeData && (
-          <Recipe key={recipeData.id} recipe={recipeData} expanded={true}></Recipe>
+          <Recipe key={recipeData.id} recipe={recipeData} canRemove={false} expanded={true}></Recipe>
         )}
         </div>
     </>

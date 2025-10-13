@@ -2,7 +2,6 @@ import React from 'react';
 import { IngredientForm as Ingredient } from './IngredientForm';
 import { StepForm  as Step } from './StepForm';
 import { useState } from 'react';
-import Recipe from './RecipeBlock';
 
 interface IngredientInput {
 	id: number;
@@ -25,8 +24,8 @@ const AddRecipe: React.FC = () => {
 	const [ingredients, setIngredients] = useState<IngredientInput[]>([])
 	const [steps, setSteps] = useState<StepInput[]>([])
 
-	const updateName = (name: string) => {
-		setName(name)
+	const updateName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    	setName(e.target.value);
 	}
 
 	// Ingredient state management
@@ -46,7 +45,7 @@ const AddRecipe: React.FC = () => {
 		setIngredients(ingredients => ingredients.filter(ingredient => ingredient.id !== idToRemove))
 	}
 
-	// Ingredient state management
+	// Step state management
 	const addStep = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
 		const newStepID: StepInput = {id: Date.now(), stepNumber: steps.length + 1, stepTime: '', instruction: ''}
@@ -65,11 +64,11 @@ const AddRecipe: React.FC = () => {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 	e.preventDefault();
-	const form = e.currentTarget;
-	const formData = new FormData(form);
-	const name = formData.get("name");
 
-	console.log("Form submitted:", name);
+	console.log("Form submitted:\nNAME:", name);
+	console.log("INGREDIENTS:", ingredients);
+	console.log("METHOD:", steps);
+
 	// TODO: handle form submission
   };
 
@@ -80,8 +79,14 @@ const AddRecipe: React.FC = () => {
     </div>
 		<form onSubmit={handleSubmit} className='flex flex-col w-full max-w-3xl'>
 			<div className='relative items-center space-x-2 flex mb-2'>
-				<input type="text" id="name" placeholder="" required={true} className='px-2.5 py-2 w-1/2 text-sm bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:border-blue-600 focus:outline-none focus:ring-0 peer'></input>
-				<label className='absolute text-sm duration-300 bg-white transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 text-gray-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1' htmlFor="name">Name:</label>
+				<input
+				type="text"
+				id="recipe-name"
+				placeholder=""
+				required={true}
+				className='px-2.5 py-2 w-1/2 text-sm bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:border-blue-600 focus:outline-none focus:ring-0 peer'
+				onChange={updateName}/>
+				<label className='absolute text-sm duration-300 bg-white transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 text-gray-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1' htmlFor="recipe-name">Name:</label>
 			</div>
 			<div className='space-x-2'>
 				<label className='mb-2 block w-full font-bold'>Ingredients:</label>
@@ -96,7 +101,7 @@ const AddRecipe: React.FC = () => {
 						onRemove={() => removeIngredient(ingredient.id)}/>
 					</div>
 					))}
-				<button className='px-1  font-bold text-xl  text-green-700 border-3 border-green-700 rounded-3xl hover:bg-green-700 hover:text-white transition-colors duration-300 ' onClick={addIngredient}>&#xff0b;</button>
+				<button className='px-1  font-bold text-xl  text-green-700 border-3 border-green-700 rounded-3xl hover:bg-green-700 hover:text-white active:text-white active:bg-green-900 active:border-green-900 transition-colors duration-300 ' onClick={addIngredient}>&#xff0b;</button>
 			</div>
 			<div className='space-x-2 mt-5'>
 				<label className='mb-2 block w-full font-bold'>Method:</label>
@@ -111,10 +116,10 @@ const AddRecipe: React.FC = () => {
 						onRemove={() => removeStep(step.id)}/>
 					</div>
 					))}
-				<button className='px-1  font-bold text-xl  text-green-700 border-3 border-green-700 rounded-3xl hover:bg-green-700 hover:text-white transition-colors duration-300 ' onClick={addStep}>&#xff0b;</button>
+				<button className='px-1  font-bold text-xl  text-green-700 border-3 border-green-700 rounded-3xl hover:bg-green-700 hover:text-white active:text-white active:bg-green-900 active:border-green-900 transition-colors duration-300 ' onClick={addStep}>&#xff0b;</button>
 			</div>
 			<div className='flex w-full justify-center'>
-				<button className='px-1 w-1/2 font-bold text-xl  text-green-700 border-3 border-green-700 rounded-3xl hover:bg-green-700 hover:text-white transition-colors duration-300 ' type="submit">Submit</button>
+				<button className='px-1 w-1/2 font-bold text-xl  text-green-700 border-3 border-green-700 rounded-3xl hover:bg-green-700 hover:text-white active:text-white active:bg-green-900 active:border-green-900 transition-colors duration-300 ' type="submit">Submit</button>
 			</div>
 		</form>
 	</div>

@@ -17,11 +17,10 @@ export const StepForm: React.FC<StepProps> = ({stepNumber, stepTime, instruction
           className='px-2.5 py-2 w-full text-sm bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:border-blue-600 focus:outline-none focus:ring-0 peer'
           id="time"
           type="text"
-          pattern="^[A-Za-z ]+$"
+          pattern="^([0-9]*\.?[0-9]+|\.?[0-9]+)$"
           value={stepTime}
           onChange={e => onChange({stepTime: e.target.value})}
           placeholder=""
-          required={true}
           />
           <span className='flex items-center mx-1'>minutes</span>
           <label className='absolute text-sm duration-300 bg-white transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 text-gray-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1' htmlFor="time">Time:</label>

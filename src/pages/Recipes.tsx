@@ -4,6 +4,7 @@ import type { RecipeType } from '../types/recipe.types';
 import { useEffect, useState } from 'react';
 import Modal from '../components/Modal';
 import AddRecipe from '../components/AddRecipe';
+import RemoveRecipe from '../components/RemoveRecipe';
 
 function Recipes() {
 
@@ -14,6 +15,7 @@ function Recipes() {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [modalContent, setModalContent] = useState<React.ReactNode>(null);
 
     useEffect(() => {
       const fetchRecipeData = async () => {
@@ -35,6 +37,20 @@ function Recipes() {
     fetchRecipeData();
   }, []);
 
+  const populateModal = (id: string, props?: Object) => {
+    switch (id) {
+    case 'add':
+      setModalContent(<AddRecipe onClose={() => setShowModal(false)}/>);
+      break;
+    case 'remove':
+      setModalContent(<RemoveRecipe recipe={props ?? {}} onClose={() => setShowModal(false)}/>);
+      break;
+    default:
+      break;
+    }
+    setShowModal(true);
+  }
+
   // Lock body when modal is active
   useEffect(() => {
     if (showModal) {
@@ -52,14 +68,14 @@ function Recipes() {
     <div>
       <div className='flow-root py-3'>
         <div className='float-left text-xl font-bold uppercase'>Recipes:</div>
-        <button className='float-right px-2 py-1 font-bold text-2xl  text-green-700 border-3 border-green-700 rounded-3xl hover:bg-green-700 hover:text-amber-200 transition-colors duration-300 ' onClick={() => setShowModal(true)}>&#xff0b;</button>
+        <button className='float-right px-2 py-1 font-bold text-2xl  text-green-700 border-3 border-green-700 rounded-3xl hover:bg-green-700 hover:text-amber-200 active:text-amber-200 active:bg-green-900 active:border-green-900 transition-colors duration-300 ' onClick={() => populateModal('add')}>&#xff0b;</button>
       </div>
       <Modal showModal={showModal} onClose={() => setShowModal(false)}>
-        <AddRecipe/>
+        {modalContent}
       </Modal>
       <ul>
         {recipeData?.map((item) => (
-          <Recipe key={item.id}recipe={item}></Recipe>
+          <Recipe key={item.id} recipe={item} openModal={() => populateModal('remove', item)}></Recipe>
         ))}
       </ul>
     </div>
