@@ -21,7 +21,7 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, canRemove = true, expanded = fa
       }>
         <Collapsible title='Ingredients: ' expanded={true} className='font-bold text-base'>
           <ul className='ml-5 font-normal'>
-          {recipe.ingredients.map((item, i) =>
+          {recipe.ingredients?.map((item, i) =>
             <li key={i}>
               {item.amount}{item.unit?.label ? ' ' + item.unit?.label : ''} {item.ingredient.label}{item.unit?.label ? '': 's'}
             </li>
@@ -30,7 +30,7 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, canRemove = true, expanded = fa
         </Collapsible>
         <Collapsible title='Method: ' expanded={true} className='font-bold text-base'>
           <ul>
-          {recipe.instructions.map((item, i) =>
+          {recipe.instructions?.map((item, i) =>
             <li key={i}>
               <div className='font-bold flex ml-5'>Step {item.stepNumber}:
                 <div className='font-normal ml-2'>

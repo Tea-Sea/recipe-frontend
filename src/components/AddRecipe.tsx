@@ -3,6 +3,10 @@ import { IngredientForm as Ingredient } from './IngredientForm';
 import { StepForm  as Step } from './StepForm';
 import { useState } from 'react';
 
+interface AddRecipeProps {
+  onSubmit: (data: any) => void;
+}
+
 interface IngredientInput {
 	id: number;
 	amount: string;
@@ -17,7 +21,7 @@ interface StepInput {
 	stepText: string;
 }
 
-const AddRecipe: React.FC = () => {
+const AddRecipe: React.FC<AddRecipeProps> = ({onSubmit}) => {
 
 	// Initialise dynamic form content with 1 entry
 	const [name, setName] = useState('')
@@ -100,7 +104,8 @@ const AddRecipe: React.FC = () => {
 			});
 
 			if (res.ok) {
-				window.location.reload();
+				const data = await res.json();
+				onSubmit(data)
 			} else {
 			throw new Error(`Failed to add recipe to database: ${res.statusText}`);
 			}

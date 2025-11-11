@@ -11,23 +11,28 @@ const RemoveRecipe: React.FC<RemoveProps> = ({ recipe, onClose}: RemoveProps) =>
     const apiUrl = import.meta.env.VITE_GO_API_URL;
 
     const removeRecipe = async (id: number) => {
-                try {
-                  const res = await fetch(`${apiUrl}/recipe/id/${id}`, {
-                    method: "DELETE",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                  });
+      try {
+        const res = await fetch(`${apiUrl}/recipe/id/${id}`, {
+          method: "DELETE",
+          headers: {
+              "Content-Type": "application/json",
+          },
+        });
 
-                  if (!res.ok) {
-                    throw new Error(`Failed to delete recipe from database: ${res.statusText}`);
-                  }
-
-                  console.log("Recipe successfully deleted");
-                } catch (err: any) {
-                  console.log(err.message);
-                }
-            };
+        if (res.ok) {
+          const text = await res.text();
+          if (text) {
+            const data = JSON.parse(text);
+            console.log("Deleted:", data);
+          }
+          onClose();
+        } else {
+          throw new Error(`Failed to delete recipe from database: ${res.statusText}`);
+        }
+      } catch (err: any) {
+        console.log(err.message);
+      }
+    };
 
   return (
     <div className='flex flex-col items-center'>

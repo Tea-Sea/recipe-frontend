@@ -11,44 +11,45 @@ function Recipes() {
   const apiUrl = import.meta.env.VITE_GO_API_URL;
 
     // Store fetched text here
-    const [recipeData, setRecipeData] = useState<RecipeType[]| null>(null);
+    const [recipeData, setRecipeData] = useState<RecipeType[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [modalContent, setModalContent] = useState<React.ReactNode>(null);
 
-    useEffect(() => {
-      const fetchRecipeData = async () => {
-        try {
-          const res = await fetch(`${apiUrl}/recipe/all`);
-          if (!res.ok) {
-            throw new Error(`API error: ${res.status}`);
-          }
-          const data = await res.json();
-          // data.instructions = keysToCamel(data.instructions);
-
-          setRecipeData(data);
-        } catch (err: any) {
-          setError(err.message);
-        } finally {
-          setLoading(false);
+    const fetchRecipeData = async () => {
+      try {
+        const res = await fetch(`${apiUrl}/recipe/all`);
+        if (!res.ok) {
+          throw new Error(`API error: ${res.status}`);
         }
-    };
+        const data = await res.json();
+        // data.instructions = keysToCamel(data.instructions);
+
+        setRecipeData(data);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+  };
+
+  const handleUpdateData = () => {
+    fetchRecipeData();
+    setShowModal(false)
+  };
+
+  useEffect(() => {
     fetchRecipeData();
   }, []);
-
-  const handleAddRecipe = (newRecipe: RecipeType) => {
-  setRecipeData(prev => [...prev, newRecipe]);
-  setShowModal(false)
-};
 
   const populateModal = (id: string, props?: Object) => {
     switch (id) {
     case 'add':
-      setModalContent(<AddRecipe onSubmit={handleAddRecipe} {...props}/>);
+      setModalContent(<AddRecipe onSubmit={handleUpdateData} {...props}/>);
       break;
     case 'remove':
-      setModalContent(<RemoveRecipe recipe={props ?? {}} onClose={() => setShowModal(false)}/>);
+      setModalContent(<RemoveRecipe recipe={props ?? {}} onClose={handleUpdateData}/>);
       break;
     default:
       break;
