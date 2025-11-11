@@ -21,11 +21,16 @@ const AddRecipe: React.FC = () => {
 
 	// Initialise dynamic form content with 1 entry
 	const [name, setName] = useState('')
+	const [difficulty, setDifficulty] = useState('')
 	const [ingredients, setIngredients] = useState<IngredientInput[]>([])
 	const [steps, setSteps] = useState<StepInput[]>([])
 
 	const updateName = (e: React.ChangeEvent<HTMLInputElement>) => {
     	setName(e.target.value);
+	}
+
+	const updateDifficulty = (e: React.ChangeEvent<HTMLInputElement>) => {
+    	setDifficulty(e.target.value);
 	}
 
 	// Ingredient state management
@@ -87,29 +92,20 @@ const AddRecipe: React.FC = () => {
 			},
 			 body: JSON.stringify({
 				name: name,
+				difficulty: parseInt(difficulty, 10),
 				ingredients: ingredientsForAPI,
 				instructions: instructionsForAPI,
 				user_id: "admin",
 			 }),
 			});
 
-			if (!res.ok) {
+			if (res.ok) {
+				window.location.reload();
+			} else {
 			throw new Error(`Failed to add recipe to database: ${res.statusText}`);
 			}
 			console.log("Recipe successfully added");
 		} catch (err: any) {
-			console.log({
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			 body: JSON.stringify({
-				name: name,
-				ingredients: ingredients,
-				instructions: steps,
-				user_id: "admin",
-			 }),
-			});
 			console.log(err.message);
 		}
   };
@@ -120,15 +116,27 @@ const AddRecipe: React.FC = () => {
 		  <div className='font-bold text-xl mb-4 underline'>Add a new recipe:</div>
     </div>
 		<form onSubmit={handleSubmit} className='flex flex-col w-full max-w-3xl'>
-			<div className='relative items-center space-x-2 flex mb-2'>
-				<input
-				type="text"
-				id="recipe-name"
-				placeholder=""
-				required={true}
-				className='px-2.5 py-2 w-1/2 text-sm bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:border-blue-600 focus:outline-none focus:ring-0 peer'
-				onChange={updateName}/>
-				<label className='absolute text-sm duration-300 bg-white transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 text-gray-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1' htmlFor="recipe-name">Name:</label>
+			<div className='flex items-center space-x-2 mb-2'>
+				<div className="relative w-full">
+					<input
+					type="text"
+					id="recipe-name"
+					placeholder=""
+					required={true}
+					className='px-2.5 py-2 w-1/2 text-sm bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:border-blue-600 focus:outline-none focus:ring-0 peer'
+					onChange={updateName}/>
+					<label className='absolute text-sm duration-300 bg-white transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 text-gray-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1' htmlFor="recipe-name">Name:</label>
+				</div>
+				<div className="relative w-40">
+					<input
+					type="text"
+					id="recipe-difficulty"
+					placeholder=""
+					required={true}
+					className='px-2.5 py-2 w-22 text-sm bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:border-blue-600 focus:outline-none focus:ring-0 peer'
+					onChange={updateDifficulty}/>
+					<label className='absolute text-sm duration-300 bg-white transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 text-gray-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1' htmlFor="recipe-difficulty">Difficulty:</label>
+				</div>
 			</div>
 			<div className='space-x-2'>
 				<label className='mb-2 block w-full font-bold'>Ingredients:</label>

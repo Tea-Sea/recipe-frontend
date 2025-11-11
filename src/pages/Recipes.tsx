@@ -37,10 +37,15 @@ function Recipes() {
     fetchRecipeData();
   }, []);
 
+  const handleAddRecipe = (newRecipe: RecipeType) => {
+  setRecipeData(prev => [...prev, newRecipe]);
+  setShowModal(false)
+};
+
   const populateModal = (id: string, props?: Object) => {
     switch (id) {
     case 'add':
-      setModalContent(<AddRecipe/>);
+      setModalContent(<AddRecipe onSubmit={handleAddRecipe} {...props}/>);
       break;
     case 'remove':
       setModalContent(<RemoveRecipe recipe={props ?? {}} onClose={() => setShowModal(false)}/>);
