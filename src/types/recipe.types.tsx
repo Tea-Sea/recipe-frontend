@@ -1,11 +1,11 @@
 export interface IngredientType {
   id: number,
-  label: string[]
+  label: string
 }
 
 export interface UnitType {
   id: number,
-  label: string[]
+  label: string
 }
 
 export interface RecipeIngredientType {
@@ -33,4 +33,5 @@ export interface RecipeType {
   difficulty: number;
   instructions: InstructionType[];
   ingredients: RecipeIngredientType[];
+  userID: string;
 }

@@ -12,7 +12,7 @@ const RemoveRecipe: React.FC<RemoveProps> = ({ recipe, onClose}: RemoveProps) =>
 
     const removeRecipe = async (id: number) => {
                 try {
-                  const res = await fetch(`${apiUrl}/recipe/${id}`, {
+                  const res = await fetch(`${apiUrl}/recipe/id/${id}`, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",

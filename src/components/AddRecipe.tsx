@@ -7,14 +7,14 @@ interface IngredientInput {
 	id: number;
 	amount: string;
 	unit: string;
-	ingredient: string;
+	label: string;
 }
 
 interface StepInput {
 	id: number;
 	stepNumber: number;
 	stepTime: string;
-	instruction: string;
+	stepText: string;
 }
 
 const AddRecipe: React.FC = () => {
@@ -31,7 +31,7 @@ const AddRecipe: React.FC = () => {
 	// Ingredient state management
 	const addIngredient = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
-		const newIngredientID: IngredientInput = {id: Date.now(), amount: '', unit: '', ingredient: ''}
+		const newIngredientID: IngredientInput = {id: Date.now(), amount: '', unit: '', label: ''}
 		setIngredients(ingredients => [...ingredients, newIngredientID])
 	}
 
@@ -48,7 +48,7 @@ const AddRecipe: React.FC = () => {
 	// Step state management
 	const addStep = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
-		const newStepID: StepInput = {id: Date.now(), stepNumber: steps.length + 1, stepTime: '', instruction: ''}
+		const newStepID: StepInput = {id: Date.now(), stepNumber: steps.length + 1, stepTime: '', stepText: ''}
 		setSteps(steps => [...steps, newStepID])
 	}
 
@@ -62,14 +62,56 @@ const AddRecipe: React.FC = () => {
 		setSteps(steps => steps.filter(step => step.id !== idToRemove))
 	}
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-	e.preventDefault();
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		// debugger;
+		e.preventDefault();
+		const ingredientsForAPI = ingredients.map(i => ({
+			amount: parseFloat(i.amount),
+			ingredient: { label: i.label },
+			unit: { label: i.unit }
+		}));
 
-	console.log("Form submitted:\nNAME:", name);
-	console.log("INGREDIENTS:", ingredients);
-	console.log("METHOD:", steps);
+		const instructionsForAPI = steps.map(i => ({
+			stepNumber: i.stepNumber,
+			stepTime: parseInt(i.stepTime, 10),
+			stepText: i.stepText,
+			notes: null
+		}));
 
-	// TODO: handle form submission
+    	const apiUrl = import.meta.env.VITE_GO_API_URL;
+		try {
+			const res = await fetch(`${apiUrl}/recipe/add`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			 body: JSON.stringify({
+				name: name,
+				ingredients: ingredientsForAPI,
+				instructions: instructionsForAPI,
+				user_id: "admin",
+			 }),
+			});
+
+			if (!res.ok) {
+			throw new Error(`Failed to add recipe to database: ${res.statusText}`);
+			}
+			console.log("Recipe successfully added");
+		} catch (err: any) {
+			console.log({
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			 body: JSON.stringify({
+				name: name,
+				ingredients: ingredients,
+				instructions: steps,
+				user_id: "admin",
+			 }),
+			});
+			console.log(err.message);
+		}
   };
 
   return (
@@ -96,7 +138,7 @@ const AddRecipe: React.FC = () => {
 						key={ingredient.id}
 						amount={ingredient.amount}
 						unit={ingredient.unit}
-						ingredient={ingredient.ingredient}
+						label={ingredient.label}
 						onChange={(updated) => updateIngredient(ingredient.id, updated)}
 						onRemove={() => removeIngredient(ingredient.id)}/>
 					</div>
@@ -111,7 +153,7 @@ const AddRecipe: React.FC = () => {
 						key={step.id}
 						stepNumber={index + 1}
 						stepTime={step.stepTime}
-						instruction={step.instruction}
+						stepText={step.stepText}
 						onChange={(updated) => updateStep(step.id, updated)}
 						onRemove={() => removeStep(step.id)}/>
 					</div>

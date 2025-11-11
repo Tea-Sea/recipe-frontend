@@ -4,12 +4,12 @@ import { Dropdown } from './Dropdown';
 interface IngredientProps {
 	amount: string
 	unit: string
-	ingredient: string
-	onChange: (updated: {amount?: string; unit?: string; ingredient?: string}) => void
+	label: string
+	onChange: (updated: {amount?: string; unit?: string; label?: string}) => void
 	onRemove: () => void
 }
 
-export const IngredientForm: React.FC<IngredientProps> = ({amount, unit, ingredient, onChange, onRemove}) => (
+export const IngredientForm: React.FC<IngredientProps> = ({amount, unit, label, onChange, onRemove}) => (
 
 	<div className='flex space-x-2 items-center my-1'>
 		<div className='relative flex-1'>
@@ -43,8 +43,8 @@ export const IngredientForm: React.FC<IngredientProps> = ({amount, unit, ingredi
 			id="ingredient"
 			type="text"
 			pattern="^[A-Za-z ]+$"
-			value={ingredient}
-			onChange={e => onChange({ingredient: e.target.value})}
+			value={label}
+			onChange={e => onChange({label: e.target.value})}
 			placeholder=""
       required={true}
 			/>

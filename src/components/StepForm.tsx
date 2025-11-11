@@ -3,12 +3,12 @@ import React from 'react';
 interface StepProps {
   stepNumber: number
 	stepTime: string
-	instruction: string
-	onChange: (updated: {stepTime?: string; instruction?: string;}) => void
+	stepText: string
+	onChange: (updated: {stepTime?: string; stepText?: string;}) => void
 	onRemove: () => void
 }
 
-export const StepForm: React.FC<StepProps> = ({stepNumber, stepTime, instruction, onChange, onRemove}) => (
+export const StepForm: React.FC<StepProps> = ({stepNumber, stepTime, stepText, onChange, onRemove}) => (
     <div className='flex space-x-2 items-start my-1 w-full h-fit'>
       <div className='font-bold whitespace-nowrap items-start'>Step {stepNumber}:</div>
       <div className='w-full justify-end'>
@@ -30,13 +30,13 @@ export const StepForm: React.FC<StepProps> = ({stepNumber, stepTime, instruction
         <textarea
         className='px-2.5 py-2 w-full text-sm bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:border-blue-600 focus:outline-none focus:ring-0 peer'
         id="instruction"
-        value={instruction}
+        value={stepText}
         onInput={(e) => {
           const target = e.target as HTMLTextAreaElement;
           target.style.height = 'auto';
           target.style.height = target.scrollHeight + 'px';
         }}
-        onChange={e => onChange({instruction: e.target.value})}
+        onChange={e => onChange({stepText: e.target.value})}
         placeholder=""
         required={true}
         />

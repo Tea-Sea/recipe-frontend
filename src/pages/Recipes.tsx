@@ -1,5 +1,5 @@
 import Recipe from '../components/RecipeBlock'
-import { keysToCamel } from '../utils/snakeToCamel';
+// import { keysToCamel } from '../utils/snakeToCamel';
 import type { RecipeType } from '../types/recipe.types';
 import { useEffect, useState } from 'react';
 import Modal from '../components/Modal';
@@ -24,7 +24,7 @@ function Recipes() {
           if (!res.ok) {
             throw new Error(`API error: ${res.status}`);
           }
-          const data = keysToCamel(await res.json());
+          const data = await res.json();
           // data.instructions = keysToCamel(data.instructions);
 
           setRecipeData(data);
@@ -40,7 +40,7 @@ function Recipes() {
   const populateModal = (id: string, props?: Object) => {
     switch (id) {
     case 'add':
-      setModalContent(<AddRecipe onClose={() => setShowModal(false)}/>);
+      setModalContent(<AddRecipe/>);
       break;
     case 'remove':
       setModalContent(<RemoveRecipe recipe={props ?? {}} onClose={() => setShowModal(false)}/>);
