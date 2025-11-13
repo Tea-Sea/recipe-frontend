@@ -26,7 +26,7 @@ function Home() {
   return (
     <>
       <header className='flex justify-center'>
-        <button className='bg-red-500 hover:bg-red-700 active:bg-red-900 text-white font-bold py-2 px-4 my-2 rounded-2xl transition-colors' onClick={fetchRandomRecipeData}>
+        <button className='bg-red-500 hover:bg-red-700 active:bg-red-900 text-white font-bold py-2 px-4 mb-2 mt-6 rounded-2xl transition-colors' onClick={fetchRandomRecipeData}>
           Give me a random recipe
         </button>
       </header>

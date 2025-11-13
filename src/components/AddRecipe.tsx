@@ -120,7 +120,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({onSubmit}) => {
 		  <div className='font-bold text-xl mb-4 underline'>Add a new recipe:</div>
     </div>
 		<form onSubmit={handleSubmit} className='flex flex-col w-full max-w-3xl'>
-			<div className='flex items-center space-x-2 mb-2'>
+			<div className='flex items-center space-x-2 mb-2 border-1 border-white border-b-gray-300 pb-2'>
 				<div className="relative w-full">
 					<input
 					type="text"
