@@ -86,7 +86,6 @@ const AddRecipe: React.FC<AddRecipeProps> = ({onSubmit}) => {
 			stepText: i.stepText,
 			notes: null
 		}));
-
     	const apiUrl = import.meta.env.VITE_GO_API_URL;
 		try {
 			const res = await fetch(`${apiUrl}/recipe/add`, {
@@ -99,7 +98,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({onSubmit}) => {
 				difficulty: parseInt(difficulty, 10),
 				ingredients: ingredientsForAPI,
 				instructions: instructionsForAPI,
-				user_id: "admin",
+				userID: "admin",
 			 }),
 			});
 
