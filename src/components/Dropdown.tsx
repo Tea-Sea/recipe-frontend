@@ -24,7 +24,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
 
   // Filter options based on query
   const filtered = options.filter((opt) =>
-    opt.toLowerCase().includes(query.toLowerCase())
+    opt.toLowerCase().includes((query ?? '').toLowerCase())
   );
 
   // Close dropdown on outside click

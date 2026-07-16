@@ -1,10 +1,12 @@
 import React from 'react';
 import { IngredientForm as Ingredient } from './IngredientForm';
 import { StepForm  as Step } from './StepForm';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import type { RecipeType } from '../types/recipe.types';
 
-interface AddRecipeProps {
-  onSubmit: (data: any) => void;
+interface RecipeFormProps {
+	recipe?: RecipeType;
+  	onSubmit: (data: any) => void;
 }
 
 interface IngredientInput {
@@ -21,13 +23,38 @@ interface StepInput {
 	stepText: string;
 }
 
-const AddRecipe: React.FC<AddRecipeProps> = ({onSubmit}) => {
+const RecipeForm: React.FC<RecipeFormProps> = ({recipe, onSubmit}) => {
 
 	// Initialise dynamic form content with 1 entry
-	const [name, setName] = useState('')
-	const [difficulty, setDifficulty] = useState('')
+	const [name, setName] = useState(recipe?.name ?? '')
+	const [difficulty, setDifficulty] = useState(recipe?.difficulty.toString() ?? '')
 	const [ingredients, setIngredients] = useState<IngredientInput[]>([])
 	const [steps, setSteps] = useState<StepInput[]>([])
+
+	useEffect(() => {
+    	if (!recipe) return;
+
+		setName(recipe.name);
+		setDifficulty(recipe.difficulty.toString());
+		setIngredients(
+			recipe.ingredients.map(i => ({
+				id: Date.now() + Math.random(),
+				amount: i.amount.toString(),
+				unit: i.unit?.label,
+				label: i.ingredient.label,
+			}))
+		);
+
+		setSteps(
+			recipe.instructions.map(step => ({
+				id: Date.now() + Math.random(),
+				stepNumber: step.stepNumber,
+				// stepTime: step.stepTime.toString(),
+				stepTime: '',
+				stepText: step.stepText,
+			}))
+		);
+	}, [recipe]);
 
 	const updateName = (e: React.ChangeEvent<HTMLInputElement>) => {
     	setName(e.target.value);
@@ -87,9 +114,13 @@ const AddRecipe: React.FC<AddRecipeProps> = ({onSubmit}) => {
 			notes: null
 		}));
     	const apiUrl = import.meta.env.VITE_GO_API_URL;
+		const url = recipe ? `${apiUrl}/recipe/id/${recipe.id}` : `${apiUrl}/recipe/add`;
+
+		const method = recipe ? "PUT" : "POST";
+
 		try {
-			const res = await fetch(`${apiUrl}/recipe/add`, {
-			method: "POST",
+			const res = await fetch(url, {
+			method,
 			headers: {
 				"Content-Type": "application/json",
 			},
@@ -117,7 +148,9 @@ const AddRecipe: React.FC<AddRecipeProps> = ({onSubmit}) => {
   return (
 	<div className='flex flex-col items-center'>
     <div>
-		  <div className='font-bold text-xl mb-4 underline'>Add a new recipe:</div>
+		<div className="font-bold text-xl mb-4 underline">
+			{recipe ? "Edit recipe" : "Add a new recipe"}
+		</div>
     </div>
 		<form onSubmit={handleSubmit} className='flex flex-col w-full max-w-3xl'>
 			<div className='flex items-center space-x-2 mb-2 border-1 border-white border-b-gray-300 pb-2'>
@@ -125,7 +158,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({onSubmit}) => {
 					<input
 					type="text"
 					id="recipe-name"
-					placeholder=""
+					value= {name}
 					required={true}
 					className='px-2.5 py-2 w-1/2 text-sm bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:border-blue-600 focus:outline-none focus:ring-0 peer'
 					onChange={updateName}/>
@@ -135,7 +168,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({onSubmit}) => {
 					<input
 					type="text"
 					id="recipe-difficulty"
-					placeholder=""
+					value= {difficulty}
 					required={true}
 					className='px-2.5 py-2 w-22 text-sm bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:border-blue-600 focus:outline-none focus:ring-0 peer'
 					onChange={updateDifficulty}/>
@@ -173,11 +206,11 @@ const AddRecipe: React.FC<AddRecipeProps> = ({onSubmit}) => {
 				<button className='px-1  font-bold text-xl  text-green-700 border-3 border-green-700 rounded-3xl hover:bg-green-700 hover:text-white active:text-white active:bg-green-900 active:border-green-900 transition-colors duration-300 ' onClick={addStep}>&#xff0b;</button>
 			</div>
 			<div className='flex w-full justify-center'>
-				<button className='px-1 w-1/2 font-bold text-xl  text-green-700 border-3 border-green-700 rounded-3xl hover:bg-green-700 hover:text-white active:text-white active:bg-green-900 active:border-green-900 transition-colors duration-300 ' type="submit">Submit</button>
+				<button className='px-1 w-1/2 font-bold text-xl  text-green-700 border-3 border-green-700 rounded-3xl hover:bg-green-700 hover:text-white active:text-white active:bg-green-900 active:border-green-900 transition-colors duration-300 ' type="submit">{recipe ? "Update" : "Submit"}</button>
 			</div>
 		</form>
 	</div>
 	)
 };
 
-export default AddRecipe;
+export default RecipeForm;

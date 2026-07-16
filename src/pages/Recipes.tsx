@@ -3,7 +3,7 @@ import Recipe from '../components/RecipeBlock'
 import type { RecipeType } from '../types/recipe.types';
 import { useEffect, useState } from 'react';
 import Modal from '../components/Modal';
-import AddRecipe from '../components/AddRecipe';
+import RecipeForm from '../components/RecipeForm';
 import RemoveRecipe from '../components/RemoveRecipe';
 
 function Recipes() {
@@ -46,10 +46,13 @@ function Recipes() {
   const populateModal = (id: string, props?: Object) => {
     switch (id) {
     case 'add':
-      setModalContent(<AddRecipe onSubmit={handleUpdateData} {...props}/>);
+      setModalContent(<RecipeForm onSubmit={handleUpdateData} {...props}/>);
       break;
     case 'remove':
       setModalContent(<RemoveRecipe recipe={props ?? {}} onClose={handleUpdateData}/>);
+      break;
+    case 'update':
+      setModalContent(<RecipeForm recipe={props} onSubmit={handleUpdateData}/>);
       break;
     default:
       break;
@@ -81,7 +84,11 @@ function Recipes() {
       </Modal>
       <ul>
         {recipeData?.map((item) => (
-          <Recipe key={item.id} recipe={item} openModal={() => populateModal('remove', item)}></Recipe>
+          <Recipe
+            key={item.id}
+            recipe={item}
+            onDelete={() => populateModal('remove', item)}
+            onUpdate={() => populateModal('update', item)}></Recipe>
         ))}
       </ul>
     </div>
