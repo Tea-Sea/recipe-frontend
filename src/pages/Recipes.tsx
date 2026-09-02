@@ -1,5 +1,5 @@
 import Recipe from '../components/RecipeBlock'
-// import { keysToCamel } from '../utils/snakeToCamel';
+import { keysToCamel } from '../utils/snakeToCamel';
 import type { RecipeType } from '../types/recipe.types';
 import { useEffect, useState } from 'react';
 import Modal from '../components/Modal';
@@ -19,12 +19,17 @@ function Recipes() {
 
     const fetchRecipeData = async () => {
       try {
-        const res = await fetch(`${apiUrl}/recipe/all`);
+        const res = await fetch(`${apiUrl}/recipe/all`, {
+          credentials: "include",
+        });
+        if (res.status === 401) {
+          window.location.href = "/login";
+          return;
+        }
         if (!res.ok) {
           throw new Error(`API error: ${res.status}`);
         }
-        const data = await res.json();
-        // data.instructions = keysToCamel(data.instructions);
+        const data = keysToCamel(await res.json());
 
         setRecipeData(data);
       } catch (err: any) {

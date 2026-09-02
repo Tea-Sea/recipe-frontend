@@ -3,7 +3,7 @@ import type { RecipeType } from '../types/recipe.types';
 import Recipe from '../components/RecipeBlock';
 import { keysToCamel } from '../utils/snakeToCamel';
 
-function Home() {
+function Random() {
   const apiUrl = import.meta.env.VITE_GO_API_URL;
 
   // store fetched text here
@@ -12,7 +12,13 @@ function Home() {
 
   const fetchRandomRecipeData = async () => {
     try {
-      const res = await fetch(`${apiUrl}/recipe/random`);
+      const res = await fetch(`${apiUrl}/recipe/random`, {
+        credentials: "include",
+      });
+      if (res.status === 401) {
+          window.location.href = "/login";
+          return;
+      }
       if (!res.ok) {
         throw new Error(`API error: ${res.status}`);
       }
@@ -40,4 +46,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Random;

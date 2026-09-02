@@ -36,24 +36,28 @@ const RecipeForm: React.FC<RecipeFormProps> = ({recipe, onSubmit}) => {
 
 		setName(recipe.name);
 		setDifficulty(recipe.difficulty.toString());
-		setIngredients(
-			recipe.ingredients.map(i => ({
-				id: Date.now() + Math.random(),
-				amount: i.amount.toString(),
-				unit: i.unit?.label,
-				label: i.ingredient.label,
-			}))
-		);
+		if (recipe.ingredients) {
+			setIngredients(
+				recipe.ingredients.map(i => ({
+					id: i.id,
+					amount: i.amount.toString(),
+					unit: i.unit?.label,
+					label: i.ingredient.label,
+				}))
+			);
+		}
 
-		setSteps(
-			recipe.instructions.map(step => ({
-				id: Date.now() + Math.random(),
-				stepNumber: step.stepNumber,
-				// stepTime: step.stepTime.toString(),
-				stepTime: '',
-				stepText: step.stepText,
-			}))
-		);
+		if (recipe.instructions) {
+			setSteps(
+				recipe.instructions.map(step => ({
+					id: step.id,
+					stepNumber: step.stepNumber,
+					// stepTime: step.stepTime.toString(),
+					stepTime: '',
+					stepText: step.stepText,
+				}))
+			);
+		}
 	}, [recipe]);
 
 	const updateName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,12 +106,14 @@ const RecipeForm: React.FC<RecipeFormProps> = ({recipe, onSubmit}) => {
 		// debugger;
 		e.preventDefault();
 		const ingredientsForAPI = ingredients.map(i => ({
+			id: 0,
 			amount: parseFloat(i.amount),
 			ingredient: { label: i.label },
 			unit: { label: i.unit }
 		}));
 
 		const instructionsForAPI = steps.map(i => ({
+			id: 0,
 			stepNumber: i.stepNumber,
 			stepTime: parseInt(i.stepTime, 10),
 			stepText: i.stepText,
@@ -120,6 +126,7 @@ const RecipeForm: React.FC<RecipeFormProps> = ({recipe, onSubmit}) => {
 
 		try {
 			const res = await fetch(url, {
+			credentials: "include",
 			method,
 			headers: {
 				"Content-Type": "application/json",
@@ -129,9 +136,13 @@ const RecipeForm: React.FC<RecipeFormProps> = ({recipe, onSubmit}) => {
 				difficulty: parseInt(difficulty, 10),
 				ingredients: ingredientsForAPI,
 				instructions: instructionsForAPI,
-				userID: "admin",
+				userID: 0,
 			 }),
 			});
+			if (res.status === 401) {
+				window.location.href = "/login";
+				return;
+			}
 
 			if (res.ok) {
 				const data = await res.json();
@@ -160,9 +171,10 @@ const RecipeForm: React.FC<RecipeFormProps> = ({recipe, onSubmit}) => {
 					id="recipe-name"
 					value= {name}
 					required={true}
+					placeholder=" "
 					className='px-2.5 py-2 w-1/2 text-sm bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:border-blue-600 focus:outline-none focus:ring-0 peer'
 					onChange={updateName}/>
-					<label className='absolute text-sm duration-300 bg-white transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 text-gray-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1' htmlFor="recipe-name">Name:</label>
+					<label className='cursor-text absolute text-sm duration-300 bg-white transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 text-gray-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1' htmlFor="recipe-name">Name:</label>
 				</div>
 				<div className="relative w-40">
 					<input
@@ -170,9 +182,11 @@ const RecipeForm: React.FC<RecipeFormProps> = ({recipe, onSubmit}) => {
 					id="recipe-difficulty"
 					value= {difficulty}
 					required={true}
+					placeholder=" "
+
 					className='px-2.5 py-2 w-22 text-sm bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:border-blue-600 focus:outline-none focus:ring-0 peer'
 					onChange={updateDifficulty}/>
-					<label className='absolute text-sm duration-300 bg-white transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 text-gray-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1' htmlFor="recipe-difficulty">Difficulty:</label>
+					<label className='cursor-text absolute text-sm duration-300 bg-white transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 text-gray-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1' htmlFor="recipe-difficulty">Difficulty:</label>
 				</div>
 			</div>
 			<div className='space-x-2'>
@@ -192,11 +206,11 @@ const RecipeForm: React.FC<RecipeFormProps> = ({recipe, onSubmit}) => {
 			</div>
 			<div className='space-x-2 mt-5'>
 				<label className='mb-2 block w-full font-bold'>Method:</label>
-				{steps.map((step, index) => (
+				{steps.map((step) => (
 					<div>
 						<Step
 						key={step.id}
-						stepNumber={index + 1}
+						stepNumber={step.stepNumber}
 						stepTime={step.stepTime}
 						stepText={step.stepText}
 						onChange={(updated) => updateStep(step.id, updated)}

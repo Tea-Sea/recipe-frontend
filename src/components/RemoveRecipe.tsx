@@ -13,11 +13,16 @@ const RemoveRecipe: React.FC<RemoveProps> = ({ recipe, onClose}: RemoveProps) =>
     const removeRecipe = async (id: number) => {
       try {
         const res = await fetch(`${apiUrl}/recipe/id/${id}`, {
+          credentials: "include",
           method: "DELETE",
           headers: {
               "Content-Type": "application/json",
           },
         });
+        if (res.status === 401) {
+          window.location.href = "/login";
+          return;
+        }
 
         if (res.ok) {
           const text = await res.text();

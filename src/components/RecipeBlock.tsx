@@ -11,6 +11,7 @@ interface RecipeProps {
 
 const Recipe: React.FC<RecipeProps> = ({ recipe, canRemove = true, expanded = false , onDelete, onUpdate}: RecipeProps) => {
 
+  console.log(recipe)
   return (
     <div className='items-center w-full bg-white border-2 border-black p-4 mb-3 shadow-retro group'>
       <Collapsible key={expanded ? 'open' : 'closed'} title={recipe.name} expanded={expanded} hover="hover:backdrop-brightness-50 rounded" className='font-bold text-2xl whitespace-nowrap'
