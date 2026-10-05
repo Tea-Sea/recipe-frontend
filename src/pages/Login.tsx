@@ -13,15 +13,11 @@ function Login() {
         setPassword(e.target.value);
     }
 
-    const handleRegister = (e: React.MouseEvent) => {
-        console.log("REG ", e);
-    }
-
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const apiUrl = import.meta.env.VITE_GO_API_URL + "/login";
+        const apiUrl = import.meta.env.VITE_GO_API_URL ;
         try {
-            const res = await fetch(apiUrl, {
+            const res = await fetch(apiUrl + "/login", {
 			method: "POST",
             credentials: "include",
 			headers: {

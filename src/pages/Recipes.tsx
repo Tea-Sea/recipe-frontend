@@ -22,10 +22,6 @@ function Recipes() {
         const res = await fetch(`${apiUrl}/recipe/all`, {
           credentials: "include",
         });
-        if (res.status === 401) {
-          window.location.href = "/login";
-          return;
-        }
         if (!res.ok) {
           throw new Error(`API error: ${res.status}`);
         }
